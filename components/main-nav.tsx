@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { siteConfig } from "@/config/site"
 import { MobileNav } from "@/components/mobile-nav"
+import Image from "next/image"
+import logo from "@/public/logo-p-up.svg"
 
 interface MainNavProps {
   items?: MainNavItem[]
@@ -22,7 +24,17 @@ export function MainNav({ items, children }: MainNavProps) {
   return (
     <div className="flex gap-6 md:gap-10">
       <Link href="/" className="hidden items-center space-x-2 md:flex">
-        <Icons.logo />
+      <div className="rounded-full overflow-hidden">
+          <Image
+            priority
+            src={logo}
+            alt="Proposal Up"
+            height={12}
+            width={12}
+            className="h-12 w-12 fill-current"
+            style={{ border: "none" }}
+          />
+        </div>
         <span className="hidden font-bold sm:inline-block">
           {siteConfig.name}
         </span>
