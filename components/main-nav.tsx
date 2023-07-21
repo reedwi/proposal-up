@@ -29,9 +29,9 @@ export function MainNav({ items, children }: MainNavProps) {
             priority
             src={logo}
             alt="Proposal Up"
-            height={12}
-            width={12}
-            className="h-12 w-12 fill-current"
+            height={10}
+            width={10}
+            className="h-10 w-10 fill-current"
             style={{ border: "none" }}
           />
         </div>
