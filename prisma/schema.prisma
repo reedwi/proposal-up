@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Proposal {
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id            String?
+  job_description    String?
+  generated_proposal String?
+  token_usage        BigInt?
+  created_at         DateTime? @default(now()) @db.Timestamptz(6)
+  users              User?    @relation(fields: [user_id], references: [id], onUpdate: NoAction)
+
+  @@map("proposal")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Subscription {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String?
+  start_date DateTime? @db.Timestamptz(6)
+  end_date   DateTime? @db.Timestamptz(6)
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  users      User?    @relation(fields: [user_id], references: [id], onUpdate: NoAction)
+
+  @@map("subscriptions")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model templates {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  template_format String?
+  created_at      DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model User {
+  id            String          @id
+  email         String?
+  first_name    String?
+  last_name     String?
+  active        Boolean?
+  created_at    DateTime?       @default(now()) @db.Timestamptz(6)
+  overview      String?
+  proposals     Proposal[]
+  subscriptions Subscription[]
+
+  @@map("users")
+}
