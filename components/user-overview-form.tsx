@@ -22,14 +22,16 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
+import { auth } from "@clerk/nextjs"
 
 interface UserOverviewFormProps extends React.HTMLAttributes<HTMLFormElement> {
   overview: string
+  userId: string | null
 }
 
 type FormData = z.infer<typeof userNameSchema>
 
-export function UserOverviewForm({ overview, className, ...props }: UserOverviewFormProps) {
+export function UserOverviewForm({ overview, userId, className, ...props }: UserOverviewFormProps) {
   const router = useRouter()
   const {
     handleSubmit,
@@ -45,26 +47,25 @@ export function UserOverviewForm({ overview, className, ...props }: UserOverview
 
   async function onSubmit(data: FormData) {
     setIsSaving(true)
-
-    // const response = await fetch(`/api/users/${user.id}`, {
-    //   method: "PATCH",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     name: data.name,
-    //   }),
-    // })
+    const response = await fetch(`/api/users/${userId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        overview: data.overview,
+      }),
+    })
 
     setIsSaving(false)
 
-    // if (!response?.ok) {
-    //   return toast({
-    //     title: "Something went wrong.",
-    //     description: "Your name was not updated. Please try again.",
-    //     variant: "destructive",
-    //   })
-    // }
+    if (!response?.ok) {
+      return toast({
+        title: "Something went wrong.",
+        description: "Your name was not updated. Please try again.",
+        variant: "destructive",
+      })
+    }
 
     toast({
       description: "Your name has been updated.",

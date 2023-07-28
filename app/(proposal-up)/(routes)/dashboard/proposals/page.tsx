@@ -23,7 +23,7 @@ export default async function ProposalsPage() {
         text="Generate a new proposal"
       />
       <div className="grid gap-10">
-        <ProposalGenerationForm jobDescription={ "" } userId={ userId }/>
+        <ProposalGenerationForm jobDescription={ "" } jobTitle={ "" } rate={ null } timeline={ "" } jobType={ null }userId={ userId }/>
       </div>
     </DashboardShell>
   )

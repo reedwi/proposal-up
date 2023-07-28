@@ -3,6 +3,7 @@ import { auth, redirectToSignIn } from "@clerk/nextjs";
 import { DashboardHeader } from "@/components/header"
 import { DashboardShell } from "@/components/shell"
 import { UserOverviewForm } from "@/components/user-overview-form"
+import prismadb from "@/lib/prismadb";
 
 export const metadata = {
   title: "Settings",
@@ -10,11 +11,20 @@ export const metadata = {
 }
 
 export default async function SettingsPage() {
-  const userId = await auth()
+  const { userId } = await auth()
 
   if (!userId) {
-    redirectToSignIn();
+    // redirectToSignIn();
+    redirect('/');
   }
+
+  const user = await prismadb.user.findFirst({
+    where: {
+      id: userId
+    }
+  });
+
+  const overview = user?.overview || "";
 
   return (
     <DashboardShell>
@@ -23,7 +33,7 @@ export default async function SettingsPage() {
         text="Manage account and profile settings."
       />
       <div className="grid gap-10">
-        <UserOverviewForm overview={ "" } />
+        <UserOverviewForm overview={ overview } userId={ userId } />
       </div>
     </DashboardShell>
   )

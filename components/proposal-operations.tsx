@@ -43,7 +43,7 @@ async function deleteProposal(proposalId: string) {
 }
 
 interface ProposalOperationsProps {
-  data: ProposalColumn
+  data: any
 }
 
 export function ProposalOperations({ data }: ProposalOperationsProps) {
@@ -60,7 +60,7 @@ export function ProposalOperations({ data }: ProposalOperationsProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem>
-            <Link href={`/proposals/${data.id}`} className="flex w-full">
+            <Link href={`/dashboard/proposals/${data.id}`} className="flex w-full">
               View
             </Link>
           </DropdownMenuItem>

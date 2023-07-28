@@ -76,7 +76,7 @@ export const CellAction: React.FC<CellActionProps> = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem>
-          <Link href={`/proposals/${data.id}`} className="flex w-full">
+          <Link href={`/dashboard/proposals/${data.id}`} className="flex w-full">
             Edit
           </Link>
         </DropdownMenuItem>

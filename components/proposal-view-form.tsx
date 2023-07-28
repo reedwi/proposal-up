@@ -25,26 +25,28 @@ import prismadb from "@/lib/prismadb"
 import { auth } from "@clerk/nextjs"
 import { Input } from "./ui/input"
 import { Select, SelectContent, SelectGroup, SelectTrigger, SelectLabel, SelectItem, SelectValue } from "./ui/select"
+import { proposalViewSchema } from "@/lib/validations/propsal-view"
 
-interface ProposalGenerationFormProps extends React.HTMLAttributes<HTMLFormElement> {
+interface ProposalViewFormProps extends React.HTMLAttributes<HTMLFormElement> {
   jobDescription: string
   jobTitle: string
   timeline: string
   rate: number | null
-  jobType: JobTypeEnum | null
+  jobType: string
   userId: string | null
+  id: string
 }
 
-type FormData = z.infer<typeof jobDescriptionSchema>
+type FormData = z.infer<typeof proposalViewSchema>
 
-export function ProposalGenerationForm({ jobDescription, jobTitle, timeline, rate, jobType, userId, className, ...props }: ProposalGenerationFormProps) {
+export function ProposalViewForm({ jobDescription, jobTitle, timeline, rate, jobType, userId, id, className, ...props }: ProposalViewFormProps) {
   const router = useRouter()
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(jobDescriptionSchema),
+    resolver: zodResolver(proposalViewSchema),
     defaultValues: {
       jobDescription: jobDescription || "",
       jobTitle: jobTitle || "",
@@ -58,8 +60,8 @@ export function ProposalGenerationForm({ jobDescription, jobTitle, timeline, rat
   async function onSubmit(data: FormData) {
     setIsSaving(true)
 
-    const response = await fetch(`/api/proposals`, {
-      method: "POST",
+    const response = await fetch(`/api/proposals/`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
@@ -69,7 +71,8 @@ export function ProposalGenerationForm({ jobDescription, jobTitle, timeline, rat
         timeline: data.timeline,
         rate: data.rate,
         job_type: data.jobType,
-        user_id: userId
+        user_id: userId,
+        id: id
       }),
     })
 

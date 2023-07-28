@@ -15,7 +15,7 @@ export function ProposalItem({ proposal }: ProposalItemProps) {
     <div className="flex items-center justify-between p-4">
       <div className="grid gap-1">
         <Link
-          href={`/proposals/${proposal.id}`}
+          href={`/dashboard/proposals/${proposal.id}`}
           className="font-semibold hover:underline"
         >
           {proposal.name}
@@ -26,7 +26,9 @@ export function ProposalItem({ proposal }: ProposalItemProps) {
           </p>
         </div>
       </div>
-      <ProposalOperations proposal={{ id: proposal.id, name: proposal.name }} />
+      <ProposalOperations data={{ 
+        id: proposal.id, 
+        name: proposal.name}} />
     </div>
   )
 }
